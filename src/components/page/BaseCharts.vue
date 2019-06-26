@@ -1,89 +1,27 @@
 <template>
     <div>
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-favor"></i> schart图表</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
-        <div class="container">
-            <div class="plugins-tips">
-                vue-schart：vue.js封装sChart.js的图表组件。
-                访问地址：<a href="https://github.com/lin-xin/vue-schart" target="_blank">vue-schart</a>
-            </div>
-            <div class="schart-box">
-                <div class="content-title">柱状图</div>
-                <schart class="schart" canvasId="bar" :data="data1" type="bar" :options="options1"></schart>
-            </div>
-            <div class="schart-box">
-            <div class="content-title">折线图</div>
-            <schart class="schart" canvasId="line" :data="data1" type="line" :options="options2"></schart>
-            </div>
-            <div class="schart-box">
-            <div class="content-title">饼状图</div>
-            <schart class="schart" canvasId="pie" :data="data2" type="pie" :options="options3"></schart>
-            </div>
-            <div class="schart-box">
-            <div class="content-title">环形图</div>
-            <schart class="schart" canvasId="ring" :data="data2" type="ring" :options="options4"></schart>
-            </div>
-        </div>
+       <ve-line :data="chartData"></ve-line>
     </div>
 </template>
 
 <script>
-    import Schart from 'vue-schart';
+   // import Schart from 'vue-schart';
     export default {
-        name: 'basecharts',
         components: {
-            Schart
+            
         },
         data: () => ({
-            data1:[
-                {name:'2012',value:1141},
-                {name:'2013',value:1499},
-                {name:'2014',value:2260},
-                {name:'2015',value:1170},
-                {name:'2016',value:970},
-                {name:'2017',value:1450}
-            ],
-            data2 : [
-                {name:'短袖',value:1200},
-                {name:'休闲裤',value:1222},
-                {name:'连衣裙',value:1283},
-                {name:'外套',value:1314},
-                {name:'羽绒服',value:2314}
-            ],
-            options1: {
-                title: '某商店近年营业总额',
-                autoWidth: true,   // 设置宽高自适应
-                showValue: false,
-                bgColor: '#F9EFCC',
-                fillColor: '#00887C',
-                contentColor: 'rgba(46,199,201,0.3)',
-                yEqual: 7
-            },
-            options2: {
-                title: '某商店近年营业总额',
-                bgColor: '#D5E4EB',
-                titleColor: '#00887C',
-                fillColor: 'red',
-                contentColor: 'rgba(46,199,201,0.3)'
-            },
-            options3: {
-                title: '某商店各商品年度销量',
-                bgColor: '#829dca',
-                titleColor: '#ffffff',
-                legendColor: '#ffffff',
-                radius: 120
-            },
-            options4: {
-                title: '某商店各商品年度销量',
-                bgColor: '#829daa',
-                titleColor: '#ffffff',
-                legendColor: '#ffffff',
-                radius: 120,
-                innerRadius:80
-            }
+            chartData: {
+           columns: ['日期', '访问用户', '下单用户', '下单率'],
+          rows: [
+            { '日期': '1/1', '访问': 1393, '下用户': 1093, '单率': 0.32 },
+            { '日期': '1/2', '访问用户': 3530, '下单用户': 3230, '下单率': 0.26 },
+            { '日期': '1/3', '访问用户': 2923, '下单用户': 2623, '下单率': 0.76 },
+            { '日期': '1/4', '访问用户': 1723, '下单用户': 1423, '下单率': 0.49 },
+            { '日期': '1/5', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
+            { '日期': '1/6', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
+          ]
+          }
         })
     }
 </script>

@@ -7,8 +7,8 @@ import requestParam from '../utils/requestParam'
 export function login(params) {
   return request({
     method: 'post',
-   // url: requestURL('/login'),
-    url:'http://localhost:8088/api/login',
+    url: requestURL('/login'),
+    //url:'http://10.30.100.110:8088/api/login',
    // data: requestParam(params, 'post', false, 'json')
    data:JSON.stringify(params)
   })

@@ -1,16 +1,16 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">电量采集系统</div>
+            <div class="ms-title">能源管理系统</div>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
                     <el-input v-model="ruleForm.username" placeholder="username">
-                        <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
+                        <el-button slot="prepend" icon="el-lwx-icon-test1"></el-button>
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
                     <el-input type="password" placeholder="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')">
-                        <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
+                        <el-button slot="prepend" icon="el-lwx-icon-test"></el-button>
                     </el-input>
                 </el-form-item>
                 <div class="login-btn">
@@ -57,6 +57,7 @@ import Vue from 'vue';
                        console.log(data.data);
                         if (data.status == 0){
                            if(data.msg == 'success'){
+                               //设置半个小时过期
                                this.$cookie.set('role',data.role);
                                this.$cookie.set('username',data.data.principal);
                         

@@ -1,15 +1,12 @@
 <template>
   <el-container style="height: 100%; border: 1px solid #eee">
     <!--左侧菜单开始-->
-    <el-aside width="220px" style="background-color: rgb(179, 192, 209)">
+    <el-aside width="210px" style="background-color: rgb(179, 192, 209)">
       <el-menu
-        :active="navselected"
+        default-active="1"
         background-color="#B3C0D1"
         text-color="#333"
         active-text-color="#ffffff"
-        :unique-opened="true"
-        @open="handleOpen"
-        @close="handleClose"
         @select="selectMenu"
       >
         <!-- 一级菜单 -->
@@ -67,13 +64,13 @@
       <!--表头开始-->
       <el-header style="font-size: 12px">
         <el-row :gutter="0">
-          <el-col :span="4">
+          <el-col :span="5">
             <div class="block">
               <span class="demonstration"></span>
               <el-date-picker v-model="beginTime" type="datetime" placeholder="开始日期时间"></el-date-picker>
             </div>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="5">
             <div class="block">
               <span class="demonstration"></span>
               <el-date-picker v-model="endTime" type="datetime" placeholder="结束日期时间"></el-date-picker>
@@ -81,14 +78,14 @@
           </el-col>
           <el-col :span="5">
             <el-select v-model="powerType" placeholder="功率类型">
-              <el-option label="正向有功总" value="ZxygZ"></el-option>
-              <el-option label="反向有功总" value="FxygZ"></el-option>
-              <el-option label="正向无功总" value="ZxwgZ"></el-option>
-              <el-option label="反向无功总" value="FxwgZ"></el-option>
+              <el-option label="正向有功总" value="正向有功总"></el-option>
+              <el-option label="反向有功总" value="反向有功总"></el-option>
+              <el-option label="正向无功总" value="正向无功总"></el-option>
+              <el-option label="反向无功总" value="反向无功总"></el-option>
             </el-select>
           </el-col>
           <el-col :span="5">
-            <el-select v-model="Source" placeholder="数据来源">
+            <el-select v-model="dataSource" placeholder="数据来源">
               <el-option label="所有数据来源" value="所有数据来源"></el-option>
               <el-option label="采集" value="采集"></el-option>
               <el-option label="手工输入" value="手工输入"></el-option>
@@ -98,10 +95,9 @@
               <el-option label="电表冻结值" value="电表冻结值"></el-option>
             </el-select>
           </el-col>
-          <el-col :span="6">
-            <el-button type="info" icon="el-icon-search" @click="getPowerData" plain>查询</el-button>
-           <el-button type="info" icon="el-icon-upload2" @click="exportPowerTotal" plain>导出</el-button> 
-           <el-button type="info" icon="el-icon-upload2" @click="exportAllPowerTotal" plain>全部导出</el-button> 
+          <el-col :span="4">
+            <el-button type="info" icon="el-icon-lx-search" plain>查询</el-button>
+            <el-button type="info" icon="el-icon-lx-upload" @click="exportData" plain>导出</el-button>
           </el-col>
         </el-row>
       </el-header>
@@ -120,15 +116,17 @@
             @row-click="handleclick"
             :row-class-name="tableRowClassName"
           >
-            <el-table-column prop="EMeterName" label="计量点名称" align="center" sortable show-overflow-tooltip></el-table-column>
-            <el-table-column prop="PowerTotal" label="正向功总（kWh" align="center" sortable></el-table-column>
-            <el-table-column prop="num" label="倍率" align="center" sortable></el-table-column>
-            <el-table-column prop="difValue" label="读数差" align="center" sortable></el-table-column>
-            <el-table-column prop="beginNumber" label="起始表底读数" align="center" sortable></el-table-column>
-            <el-table-column prop="endNumber" label="结束表底读数" align="center" sortable></el-table-column>
-            <el-table-column prop="beginTime" label="起始表底抄表时间" align="center" sortable></el-table-column>
-            <el-table-column prop="endTime" label="结束表底抄表时间" align="center" sortable></el-table-column>
+            <el-table-column prop="id" label="Id" sortable width="58px" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="geNumber" width="95px" label="工号" sortable></el-table-column>
+            <el-table-column prop="geName" label="姓名" width="88px" sortable></el-table-column>
+            <el-table-column prop="userState" label="状态" width="88px" sortable></el-table-column>
+            <el-table-column prop="phone" label="电话" sortable></el-table-column>
+            <el-table-column prop="email" label="邮箱" sortable></el-table-column>
+            <el-table-column prop="createTime" label="创建时间" sortable></el-table-column>
+            <el-table-column prop="updateTime" label="修改时间" sortable></el-table-column>
           </el-table>
+
+        
 
           <div align="center">
             <el-pagination
@@ -166,11 +164,10 @@ import Vue from "vue";
 export default {
   data() {
     return {
-      navselected:"",
       beginTime: "",
       endTime: "",
-      powerType: "ZxygZ",
-      Source: "所有数据来源",
+      powerType: "",
+      dataSource: "",
       //表格当前页数据
       tableData: [],
       //多选数组
@@ -180,7 +177,7 @@ export default {
       //下拉菜单选项
       select: "",
       //默认每页数据量
-      pagesize: 10000,
+      pagesize: 10,
       //默认高亮行数据id
       highlightId: -1,
       //当前页码
@@ -188,46 +185,51 @@ export default {
       //查询的页码
       start: 1,
       //默认数据总数
-      totalCount: 0,
+      totalCount: 1000,
       formLabelWidth: "120px",
-      list: "",
-      key: "",
-      EStationName:""
+      list: ""
     };
   },
   created() {
+    this.loadData(this.criteria, this.currentPage, this.pagesize);
     this.loadMenu();
   },
   methods: {
-    //获取所选节点
+    //从服务器读取数据
+    loadData: function(criteria, pageNum, pageSize) {
+      let params = {
+        parameter: criteria,
+        pageNum: pageNum,
+        pageSize: pageSize
+      };
+      API.userUtil
+        .getData(params)
+        .then(({ data }) => {
+          console.log(data);
+          if (data.status == 0) {
+            this.tableData = data.data.userData;
+            this.totalCount = data.data.number;
+          } else {
+            //this.$Message.error(data.msg);
+            this.$message("请求失败！");
+          }
+        })
+        .catch(data => {
+          this.$message("请求失败ww！");
+          console.log(data);
+        });
+    },
+
+
     selectMenu: function(key, keyPath, name) {
-      this.EStationName = keyPath[1].split("/")[1];
-      if(keyPath.length<=2){
-        this.key = "";
-      }else{
-        this.key = keyPath[2].split("/")[1];
-      }
-      console.log(key+"---"+keyPath+'---'+name);
-    },
-    handleOpen: function(key, keyPath, name) {
-      this.EStationName = key.split("/")[1];
-      this.key = "";
-      this.navselected="";
-      console.log(this.EStationName);
-      console.log("open----"+key+",,,,"+keyPath+',,,,,'+name);
-    },
-    handleClose: function(key, keyPath, name) {
-      this.EStationName = key.split("/")[1];
-      this.key = "";
-      this.navselected="";
-      console.log(this.EStationName);
-      console.log("close----"+key+",,,,"+keyPath+',,,,,'+name);
+      console.log("key:" + key + "keyPath:" + keyPath);
+      console.log(name);
     },
 
     //加载树状图
     loadMenu: function() {
-      API.powerUtil
-        .getMenu()
+      API.ertusUtil
+        .getErtus()
         .then(({ data }) => {
           console.log(data.data);
           if (data.status == 0) {
@@ -241,52 +243,8 @@ export default {
           this.$message("请求失败ww！");
           console.log(data);
         });
-    },
-    //从服务器读取数据
-    getPowerData: function() {
-      if(this.EStationName==null || this.EStationName ==""){
-         this.$message("请选择电表！");
-      }else if(this.beginTime==""){
-        this.$message("请选择开始时间！");
-      }else if(this.endTime==""){
-        this.$message("请选择结束时间！");
-      }else if(this.Source==""){
-        this.$message("请选择数据来源！");
-      }else if(this.powerType==""){
-        this.$message("请选择功率类型！");
-      }else{
-      let params = {
-        estationName:this.EStationName,
-        emeterName: this.key,
-        beginTime: this.beginTime,
-        endTime: this.endTime,
-        source: this.Source,
-        powerType: this.powerType,
-        pageNum: this.currentPage,
-        pageSize: this.pagesize
-      };
-      API.powerUtil
-        .getPowerData(params)
-        .then(({ data }) => {
-          console.log(data.data);
-          if (data.status == 0) {
-            if(data.data.tableData==null){
-              this.tableData = null;
-              this.totalCount = 0;
-            }else{
-            this.tableData = data.data.tableData.list;
-            this.totalCount = data.data.tableData.total;
-            }
-            
-          } else {
-            this.$message("请求失败！");
-          }
-        })
-        .catch(data => {
-          this.$message("请求失败ww！");
-          console.log(data);
-        });
-      }
+      
+     
     },
 
     //多选响应
@@ -307,34 +265,8 @@ export default {
     add: function() {
       this.addFormVisible = true;
     },
-    exportPowerTotal() {
-      if(this.key==null || this.key ==""){
-         this.$message("请选择电表！");
-      }else if(this.beginTime==""){
-        this.$message("请选择开始时间！");
-      }else if(this.endTime==""){
-        this.$message("请选择结束时间！");
-      }else if(this.powerType==""){
-        this.$message("请选择功率类型！");
-      }else{
-          window.location.href = "http://localhost:8088/api/exportPowerTotal.do?estationName=" + this.EStationName+"&emeterName="+this.key+"&beginTime="+this.beginTime+"&endTime="+this.endTime+"&powerType="+this.powerType;
-     //window.location.href = "http://10.30.100.110:8088/api/exportPowerTotal.do?estationName=" + this.EStationName+"&emeterName="+this.key+"&beginTime="+this.beginTime+"&endTime="+this.endTime+"&powerType="+this.powerType;
-      }
-      
-     // this.$message("待开发");
-    },
-    exportAllPowerTotal() {
-      if(this.beginTime==""){
-        this.$message("请选择开始时间！");
-      }else if(this.endTime==""){
-        this.$message("请选择结束时间！");
-      }else if(this.powerType==""){
-        this.$message("请选择功率类型！");
-      }else{
-         window.location.href = "http://localhost:8088/api/exportAllPowerTotal.do?beginTime="+this.beginTime+"&endTime="+this.endTime+"&powerType="+this.powerType;
-    // window.location.href = "http://10.30.100.110:8088/api/exportAllPowerTotal.do?beginTime="+this.beginTime+"&endTime="+this.endTime+"&powerType="+this.powerType;
-      }
-     // this.$message("待开发");
+    exportData() {
+      window.location.href = "http://localhost:8088/api/exportUser.do";
     },
 
     //改变当前点击的行的class，高亮当前行

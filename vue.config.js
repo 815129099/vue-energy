@@ -14,6 +14,7 @@ module.exports = {
         proxy: {//配置跨域
             '/api': {
                 // 目标服务器地址
+                //target: 'http://10.30.100.110:8088/',
                 target: 'http://localhost:8088/',
                 //路径重写
                 //pathRewrite: {'^/api' : ''},

@@ -16,9 +16,9 @@
 				  <el-option label="状态" value="3"></el-option>
 				  <el-option label="电话" value="4"></el-option>
 			  </el-select>
-			  <el-button slot="append" icon="el-icon-lx-search" v-on:click="search">查询</el-button>
-              <el-button slot="append" icon="el-icon-lx-add" v-on:click="add">添加</el-button>
-			  <el-button slot="append" icon="el-icon-lx-upload" v-on:click="exportUser">导出</el-button>
+			  <el-button slot="append" icon="el-icon-search" v-on:click="search">查询</el-button>
+              <el-button slot="append" icon="el-icon-plus" v-on:click="add">添加</el-button>
+			  <el-button slot="append" icon="el-icon-upload2" v-on:click="exportUser">导出</el-button>
 		  </el-input>  		
 
 		  <el-table
@@ -375,7 +375,7 @@ export default {
                     this.addFormVisible = true;
 				},
 				exportUser(){
-						 this.$message("等待开发中！！！");
+						 window.location.href = "http://localhost:8088/api/exportUser.do";
 				},
 				/*
 		        //多项删除

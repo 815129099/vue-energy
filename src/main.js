@@ -5,11 +5,13 @@ import axios from 'axios';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 // import '../static/css/theme-green/index.css';       // 浅绿色主题
-import './assets/css/icon.css';
+//import './assets/css/icon.css';
+import './assets/icon/iconfont.css';
 import './components/common/directives';
 import "babel-polyfill";
 import VueCookie from 'vue-cookie';
-import store from './store'
+import store from './store';
+import VCharts from 'v-charts';
 /*
 import VeeValidate from 'vee-validate';
 import zh_CN from 'vee-validate/dist/locale/zh_CN';
@@ -33,6 +35,7 @@ const config = {
 };
 Vue.use(VeeValidate, config);*/
 Vue.use(VueCookie);
+Vue.use(VCharts);
 Vue.config.productionTip = false
 Vue.use(ElementUI, {
     size: 'small'
@@ -42,11 +45,8 @@ Vue.prototype.$axios = axios;
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     //const role = localStorage.getItem('ms_username');
-    console.log(to);
-    console.log(from);
-    console.log(next);
     const role = Vue.cookie.get('role');
-    console.log(role);
+
     /*
     if(role){
         console.log(router);

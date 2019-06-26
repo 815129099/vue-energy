@@ -254,9 +254,29 @@ export default new Router({
                     meta: { title: '电量数据' }
                 },
                 {
-                    path: '/Nav',
-                    component: resolve => require(['../components/page/nav.vue'], resolve),
-                    meta: { title: '动态菜单' }
+                    path: '/powerAnalyze',
+                    component: resolve => require(['../components/page/PowerAnalyze.vue'], resolve),
+                    meta: { title: '电量数据分析' }
+                },
+                {
+                    path: '/instantPowerAnalyze',
+                    component: resolve => require(['../components/page/InstantPowerAnalyze.vue'], resolve),
+                    meta: { title: '瞬时量分析' }
+                },
+                {
+                    path: '/Ertus',
+                    component: resolve => require(['../components/page/Ertus.vue'], resolve),
+                    meta: { title: '采集器管理' }
+                },
+                {
+                    path: '/Charge',
+                    component: resolve => require(['../components/page/Charge.vue'], resolve),
+                    meta: { title: '电费管理' }
+                },
+                {
+                    path: '/Electriclist',
+                    component: resolve => require(['../components/page/Electriclist.vue'], resolve),
+                    meta: { title: '峰平谷' }
                 },
                 {
                     path: '/table',
@@ -291,12 +311,7 @@ export default new Router({
                     component: resolve => require(['../components/page/Upload.vue'], resolve),
                     meta: { title: '文件上传' }   
                 },
-                {
-                    // vue-schart组件
-                    path: '/charts',
-                    component: resolve => require(['../components/page/BaseCharts.vue'], resolve),
-                    meta: { title: 'schart图表' }
-                },
+                
                 {
                     // 拖拽列表组件
                     path: '/drag',
@@ -314,6 +329,11 @@ export default new Router({
                     path: '/permission',
                     component: resolve => require(['../components/page/Permission.vue'], resolve),
                     meta: { title: '权限测试', permission: true }
+                },
+                {
+                    path: '/record',
+                    component: resolve => require(['../components/page/Record.vue'], resolve),
+                    meta: { title: '访问记录' }
                 },
                 {
                     path: '/404',
